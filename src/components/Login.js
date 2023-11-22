@@ -7,14 +7,13 @@ import {
   updateProfile,
 } from "firebase/auth";
 import { auth } from "../Utils/firebase";
-import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { addUser } from "../Utils/userSlice";
+import { USER_AVTAR } from "../Utils/constants";
 
 const Login = () => {
   const [isSignInForm, setIsSignIForm] = useState(true);
   const [errMessage, setErrMessage] = useState(null);
-  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const name = useRef(null);
@@ -41,8 +40,7 @@ const Login = () => {
           const user = userCredential.user;
           updateProfile(user, {
             displayName: name.current.value,
-            photoURL:
-              "https://thumbs.dreamstime.com/b/shocked-emoji-icon-design-vector-eps-illustration-best-print-media-web-application-user-interface-infographics-131126312.jpg",
+            photoURL: USER_AVTAR,
           })
             .then(() => {
               const { uid, email, displayName, photoURL } = auth.currentUser;
@@ -54,13 +52,10 @@ const Login = () => {
                   photoURL: photoURL,
                 })
               );
-              navigate("/browse");
             })
             .catch((error) => {
               setErrMessage(error.message);
             });
-
-          navigate("/browse");
         })
         .catch((error) => {
           const errorCode = error.code;
@@ -77,7 +72,6 @@ const Login = () => {
           // Signed in
           const user = userCredential.user;
           console.log(user);
-          navigate("/browse");
         })
         .catch((error) => {
           const errorCode = error.code;
