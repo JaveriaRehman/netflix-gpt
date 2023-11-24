@@ -4,12 +4,15 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { addUser, removeUser } from "../Utils/userSlice";
-import { LOGO } from "../Utils/constants";
+import { LOGO, SUPPORT_LANGUAGE } from "../Utils/constants";
+import { toggleGptSearchView } from "../Utils/gptSlice";
+import { changeLanguage } from "../Utils/configSlice";
 
 const Header = () => {
   const navigate = useNavigate();
   const user = useSelector((store) => store.user);
   const dispatch = useDispatch();
+  const showGptSearch = useSelector((store) => store.gpt.showGptSearch);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -42,11 +45,37 @@ const Header = () => {
       });
   };
 
+  const handleGPTSearchclick = () => {
+    dispatch(toggleGptSearchView());
+  };
+
+  const handleLanguageChange = (e) => {
+    dispatch(changeLanguage(e.target.value));
+  };
+
   return (
-    <div className="absolute w-full px-8 py-2 bg-gradient-to-b from-black z-10 flex justify-between">
+    <div className="absolute w-screen px-8 py-2 bg-gradient-to-b from-black z-10 flex justify-between">
       <img className="w-44 " src={LOGO} alt="logo" />
       {user && (
-        <div className="flex w-15 p-2">
+        <div className="flex p-2">
+          {showGptSearch && (
+            <select
+              className="p-2 m-2 bg-gray-900 text-white"
+              onChange={handleLanguageChange}
+            >
+              {SUPPORT_LANGUAGE.map((lang) => (
+                <option key={lang.identifier} value={lang.identifier}>
+                  {lang.name}
+                </option>
+              ))}
+            </select>
+          )}
+          <button
+            className="py-2 px-4 bg-purple-500 text-white rounded-lg  mx-4"
+            onClick={handleGPTSearchclick}
+          >
+            {showGptSearch ? "GPT Search" : "Hpme Page"}
+          </button>
           <img className="w-12 h-22" src={user.photoURL} alt="usericon" />
           <button onClick={handleSignOut} className="font-bold text-white">
             (Sign Out)

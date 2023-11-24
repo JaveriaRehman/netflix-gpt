@@ -9,7 +9,7 @@ import {
 import { auth } from "../Utils/firebase";
 import { useDispatch } from "react-redux";
 import { addUser } from "../Utils/userSlice";
-import { USER_AVTAR } from "../Utils/constants";
+import { BG_URL, USER_AVTAR } from "../Utils/constants";
 
 const Login = () => {
   const [isSignInForm, setIsSignIForm] = useState(true);
@@ -83,12 +83,8 @@ const Login = () => {
   return (
     <div>
       <Header />
-      <div>
-        <img
-          className="absolute"
-          src="https://assets.nflxext.com/ffe/siteui/vlv3/a09bb938-2d90-42ae-986e-5a3e4abf9e77/8eb1e781-3494-4aa4-9405-268ca6473e4c/IN-en-20231113-popsignuptwoweeks-perspective_alpha_website_small.jpg"
-          alt="logo"
-        />
+      <div className="absolute">
+        <img src={BG_URL} alt="logo" />
       </div>
       <form
         onSubmit={(e) => e.preventDefault()}
