@@ -4,6 +4,12 @@ import moviesReducer from "./moviesSlice";
 import gptReducer from "./gptSlice";
 import configReducer from "./configSlice";
 
+const defaultMiddlewareConfig = {
+  serializableCheck: {
+    ignoredPaths: ["filters.startDate", "filters.endDate"],
+  },
+};
+
 const appstore = configureStore({
   reducer: {
     user: userReducer,
@@ -11,6 +17,8 @@ const appstore = configureStore({
     gpt: gptReducer,
     config: configReducer,
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware(defaultMiddlewareConfig),
 });
 
 export default appstore;
